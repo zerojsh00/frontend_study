@@ -3,7 +3,13 @@
     <div class="white-bg">
       <h4>{{ oneroom[pageIdx].title }}</h4>
       <p>{{ oneroom[pageIdx].content }}</p>
-      <!-- <img :src="oneroom[pageIdx].image" /> -->
+      <img :src="oneroom[pageIdx].image" style="width: 100%" />
+      <!-- <input @input="month = $event.target.value" /> -->
+      <p><input v-model.number="month" /> 개월</p>
+      <p>
+        {{ month }} X {{ oneroom[pageIdx].price }} =
+        {{ month * oneroom[pageIdx].price }} 원
+      </p>
       <button @click="$emit('closeModal')">닫기</button>
     </div>
   </div>
@@ -12,6 +18,9 @@
 <script>
 export default {
   name: "ModalWindow",
+  data() {
+    return { month: 0 };
+  },
   props: {
     oneroom: Array,
     isModalOpened: Boolean,
