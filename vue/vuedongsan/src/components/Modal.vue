@@ -1,7 +1,10 @@
 <template>
   <div class="black-bg" v-if="isModalOpened == true">
-    <div class="white-bg" v-for="(room, i) in oneroom" :key="i">
-      <h4>{{ room.title }}</h4>
+    <div class="white-bg">
+      <h4>{{ oneroom[pageIdx].title }}</h4>
+      <p>{{ oneroom[pageIdx].content }}</p>
+      <!-- <img :src="oneroom[pageIdx].image" /> -->
+      <button @click="$emit('closeModal')">닫기</button>
     </div>
   </div>
 </template>
@@ -12,6 +15,7 @@ export default {
   props: {
     oneroom: Array,
     isModalOpened: Boolean,
+    pageIdx: Number,
   },
 };
 </script>
@@ -33,7 +37,7 @@ div {
   padding: 20px;
 }
 
-white-bg {
+.white-bg {
   width: 100%;
   background: white;
   border-radius: 8px;

@@ -1,11 +1,14 @@
 <template>
   <div>
     <Menu></Menu>
+    <Discount></Discount>
     <Modal
       v-bind:oneroom="oneroom"
       v-bind:isModalOpened="isModalOpened"
+      v-bind:pageIdx="pageIdx"
+      @closeModal="closeModal"
     ></Modal>
-    <Card v-bind:oneroom="oneroom"></Card>
+    <Card v-bind:oneroom="oneroom" @openModal="openModal($event)"></Card>
   </div>
 </template>
 
@@ -14,11 +17,13 @@ import oneroom from "./assets/oneroom";
 import MenuBar from "./components/Menu.vue";
 import ModalWindow from "./components/Modal.vue";
 import RoomCard from "./components/Card.vue";
+import DiscountCmp from "./components/Discount.vue";
 
 export default {
   name: "App",
   data() {
     return {
+      pageIdx: 0,
       isModalOpened: false,
       oneroom: oneroom,
     };
@@ -27,9 +32,16 @@ export default {
     Menu: MenuBar,
     Modal: ModalWindow,
     Card: RoomCard,
+    Discount: DiscountCmp,
   },
   methods: {
-    changeModalStatus() {},
+    openModal(pageIdx) {
+      this.isModalOpened = true;
+      this.pageIdx = pageIdx;
+    },
+    closeModal() {
+      this.isModalOpened = false;
+    },
   },
 };
 </script>
