@@ -2,13 +2,19 @@
   <div>
     <Menu></Menu>
     <Discount></Discount>
-    <Modal
-      v-bind:oneroom="oneroom"
-      v-bind:isModalOpened="isModalOpened"
-      v-bind:pageIdx="pageIdx"
-      @closeModal="closeModal"
-    ></Modal>
-    <Card v-bind:oneroom="oneroom" @openModal="openModal($event)"></Card>
+    <button @click="sortAscending">낮은가격순</button>
+    <button @click="sortInit">가격순초기화</button>
+    <button @click="sortDescending">비싼가격순</button>
+
+    <Transition name="fade">
+      <Modal
+        v-bind:oneroom="oneroom"
+        v-bind:isModalOpened="isModalOpened"
+        v-bind:pageIdx="pageIdx"
+        @closeModal="closeModal"
+      ></Modal>
+    </Transition>
+    <Card v-bind:oneroom="oneroom_sorted" @openModal="openModal($event)"></Card>
   </div>
 </template>
 
@@ -25,7 +31,8 @@ export default {
     return {
       pageIdx: 0,
       isModalOpened: false,
-      oneroom: oneroom,
+      oneroom: [...oneroom],
+      oneroom_sorted: [...oneroom],
     };
   },
   components: {
@@ -42,6 +49,17 @@ export default {
     closeModal() {
       this.isModalOpened = false;
     },
+    sortAscending() {
+      const sorted = [...this.oneroom].sort((a, b) => a.price - b.price);
+      this.oneroom_sorted = sorted;
+    },
+    sortInit() {
+      this.oneroom_sorted = oneroom;
+    },
+    sortDescending() {
+      const sorted = [...this.oneroom].sort((a, b) => b.price - a.price);
+      this.oneroom_sorted = sorted;
+    },
   },
 };
 </script>
@@ -54,5 +72,15 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 20px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
