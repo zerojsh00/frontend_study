@@ -9,7 +9,7 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <Container v-bind:postData="postData" />
+  <Container v-bind:postData="postData" v-bind:step="step" />
   <button @click="more">더보기</button>
 
   <div class="footer">
@@ -29,7 +29,7 @@ export default {
   name: "App",
   components: { Container: ContainerCmp },
   data() {
-    return { postData: postData, clickCount: 0 };
+    return { postData: postData, clickCount: 0, step: 0 };
   },
   methods: {
     more() {
