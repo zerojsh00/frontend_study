@@ -5,6 +5,7 @@
       <span class="profile-name">{{ post.name }}</span>
     </div>
     <div
+      :class="`${post.filter}`"
       class="post-body"
       :style="{ backgroundImage: `url(${post.postImage})` }"
     ></div>
@@ -21,6 +22,11 @@ export default {
   name: "PostCmp",
   props: {
     post: Object,
+  },
+  mounted() {
+    this.emitter.on("emittedFilter", (filter) => {
+      this.filter = filter;
+    });
   },
 };
 </script>

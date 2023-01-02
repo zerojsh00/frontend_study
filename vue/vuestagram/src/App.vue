@@ -4,17 +4,30 @@
       <li>Cancel</li>
     </ul>
     <ul class="header-button-right">
-      <li>Next</li>
+      <li v-if="step === 1" @click="step++">Next</li>
+      <li v-if="step === 2" @click="publish">Publish</li>
     </ul>
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <Container v-bind:postData="postData" v-bind:step="step" />
+  <Container
+    v-bind:postData="postData"
+    v-bind:step="step"
+    v-bind:imgurl="imgurl"
+    v-bind:text="text"
+    v-on:write="text = $event"
+  />
   <button @click="more">더보기</button>
 
   <div class="footer">
     <ul class="footer-button-plus">
-      <input type="file" id="file" class="inputfile" />
+      <input
+        @change="upload"
+        accept="image/*"
+        type="file"
+        id="file"
+        class="inputfile"
+      />
       <label for="file" class="input-plus">+</label>
     </ul>
   </div>
@@ -29,9 +42,40 @@ export default {
   name: "App",
   components: { Container: ContainerCmp },
   data() {
-    return { postData: postData, clickCount: 0, step: 0 };
+    return {
+      postData: postData,
+      clickCount: 0,
+      step: 0,
+      imgurl: null,
+      text: "",
+      filter: "",
+    };
+  },
+  mounted() {
+    this.emitter.on("emittedFilter", (filter) => {
+      this.filter = filter;
+    });
   },
   methods: {
+    publish() {
+      const newPost = {
+        name: "Simon",
+        userImage: "https://placeimg.com/100/100/arch",
+        postImage: this.imgurl,
+        likes: 0,
+        date: new Date(),
+        liked: false,
+        content: this.text,
+        filter: this.filter,
+      };
+      this.postData.unshift(newPost);
+      this.step = 0;
+    },
+    upload(e) {
+      let file = e.target.files;
+      this.step++;
+      this.imgurl = URL.createObjectURL(file[0]);
+    },
     more() {
       axios
         .get(`https://codingapple1.github.io/vue/more${this.clickCount}.json`)

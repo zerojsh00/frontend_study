@@ -8,19 +8,33 @@
 
     <div v-if="step === 1">
       <!-- 필터선택페이지 -->
-      <div class="upload-image"></div>
+      <div
+        :class="`${filter} upload-image`"
+        :style="{ backgroundImage: `url(${imgurl})` }"
+      ></div>
       <div class="filters">
-        <div class="filter-1"></div>
-        <div class="filter-1"></div>
-        <div class="filter-1"></div>
-        <div class="filter-1"></div>
-        <div class="filter-1"></div>
+        <FilterBox
+          v-bind:imgurl="imgurl"
+          v-for="(filter, i) in filters"
+          :key="i"
+          :filter="filter"
+          >{{ filter }}</FilterBox
+        >
       </div>
-
+    </div>
+    <div v-if="step === 2">
       <!-- 글작성페이지 -->
-      <div class="upload-image"></div>
+      <div
+        :class="`${filter} upload-image`"
+        :style="{ backgroundImage: `url(${imgurl})` }"
+      ></div>
       <div class="write">
-        <textarea class="write-box">write!</textarea>
+        <textarea
+          class="write-box"
+          @input="$emit('write', $event.target.value)"
+        >
+write!</textarea
+        >
       </div>
     </div>
   </div>
@@ -28,14 +42,57 @@
 
 <script>
 import PostCmp from "./Post.vue";
+import FilterBox from "./FilterBox.vue";
 export default {
   name: "ContainerCmp",
   components: {
     Post: PostCmp,
+    FilterBox: FilterBox,
   },
   props: {
     postData: Array,
     step: Number,
+    imgurl: String,
+    value: String,
+  },
+  methods: {},
+  data() {
+    return {
+      filter: "",
+      filters: [
+        "aden",
+        "_1977",
+        "brannan",
+        "brooklyn",
+        "clarendon",
+        "earlybird",
+        "gingham",
+        "hudson",
+        "inkwell",
+        "kelvin",
+        "lark",
+        "lofi",
+        "maven",
+        "mayfair",
+        "moon",
+        "nashville",
+        "perpetua",
+        "reyes",
+        "rise",
+        "slumber",
+        "stinson",
+        "toaster",
+        "valencia",
+        "walden",
+        "willow",
+        "xpro2",
+      ],
+    };
+  },
+  mounted() {
+    this.emitter.on("emittedFilter", (filter) => {
+      this.filter = filter;
+    });
   },
 };
 </script>
