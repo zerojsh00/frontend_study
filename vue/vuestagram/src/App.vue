@@ -10,6 +10,21 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
+  <div>
+    <div>
+      <h4>안녕 {{ $store.state.name }} {{ $store.state.number }}</h4>
+      <button @click="$store.commit('changeName')">BUTTON</button>
+      <button @click="$store.commit('increaseNumber')">숫자올리기</button>
+      <button @click="$store.commit('increase10Number', 10)">
+        숫자10씩올리기
+      </button>
+    </div>
+    <div>
+      <p>{{ $store.state.more }}</p>
+      <button @click="$store.dispatch('getData')">vuex를 이용한 더보기</button>
+    </div>
+  </div>
+
   <Container
     v-bind:postData="postData"
     v-bind:step="step"
